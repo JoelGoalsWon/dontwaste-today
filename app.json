@@ -1,0 +1,10 @@
+{
+  "name": "Dont Waste Today!",
+  "displayName": "Dont Waste Today!",
+  "expo": {
+    "name": "Dont Waste Today!",
+    "slug": "Dont Waste Today!",
+    "version": "1.0.0",
+    "assetBundlePatterns": ["**/*"]
+  }
+}
