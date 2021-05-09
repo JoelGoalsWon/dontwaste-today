@@ -28,4 +28,4 @@ Don't Waste Today is a free and open source app that will:
 - [react-native-simple-toast](https://github.com/vonovak/react-native-simple-toast)
 - [react-navigation](https://github.com/react-navigation/react-navigation)
 
-> Made with 💖 by the co-founders of [GoalsWon](https://www.goalswon.com/?utm_source=dwt&utm_medium=sideproject&utm_campaign=dwt)
+> Made with 💖 by the co-founders of [GoalsWon](https://www.goalswon.com/?utm_source=gh&utm_medium=sideproject&utm_campaign=dwt)
