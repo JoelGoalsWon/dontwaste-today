@@ -6,6 +6,7 @@ import {
   Image,
   View,
 } from 'react-native';
+
 import styles from './style';
 import { getRemoteValue } from '../../../api/remoteConfig';
 import { logPopupTap } from '../../../api/analytics';
@@ -31,7 +32,7 @@ export default ({ dismissHandler, screen }) => {
   const tapHandler = async () => {
     Linking.openURL(link);
     dismissHandler();
-    await logPopupTap(screen, title, text, image);
+    logPopupTap(screen, title, text, image); // TODO await should go here?
   };
 
   return isPopupEnabled ? (

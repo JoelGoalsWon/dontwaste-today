@@ -58,7 +58,7 @@ const getStarted = () => {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>
         <View style={styles.title}>
-          <Title title='First, set up your settings' />
+          <Title title='Final step' />
         </View>
         <View>
           <Text style={styles.sectionHeader}>
@@ -73,9 +73,8 @@ const getStarted = () => {
 
         <View>
           <Text style={styles.sectionHeader}>
-            Next,{' '}
-            <Text style={{ fontWeight: 'bold' }}>which times</Text>{' '}
-            should I send these notifications?
+            Next, <Text style={{ fontWeight: 'bold' }}>when</Text> to
+            send these notifications?
           </Text>
           {showAndroid && (
             <AndroidTimePicker
@@ -94,8 +93,7 @@ const getStarted = () => {
         <View>
           <Text style={styles.sectionHeader}>
             Finally, on{' '}
-            <Text style={{ fontWeight: 'bold' }}>which days</Text>{' '}
-            should I do this?
+            <Text style={{ fontWeight: 'bold' }}>which days</Text>?
           </Text>
           <DaysPicker settings={settings} setSettings={setSettings} />
         </View>

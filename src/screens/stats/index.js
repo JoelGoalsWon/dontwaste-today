@@ -183,7 +183,7 @@ const Stats = () => {
                     barPercentage: 1,
                   }}
                   style={{
-                    marginLeft: -20,
+                    marginLeft: -10,
                     zIndex: 1000,
                   }}
                 />

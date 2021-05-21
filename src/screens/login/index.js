@@ -14,14 +14,18 @@ import SafeAreaView from 'react-native-safe-area-view';
 import {
   GoogleSignin,
   GoogleSigninButton,
-  statusCodes,
 } from '@react-native-google-signin/google-signin';
+
+// SIGN IN WITH APPLE
 import {
   appleAuth,
   AppleButton,
 } from '@invertase/react-native-apple-authentication';
+
+// Firebase
 import auth from '@react-native-firebase/auth';
 
+// Redux
 import { useDispatch } from 'react-redux';
 import {
   login,
@@ -30,7 +34,7 @@ import {
   firstNotification,
 } from '../../redux/actions/auth';
 import { addUser } from '../../api/firestore';
-import { defaultSettings, colors } from '../../api/constants';
+import { defaultSettings } from '../../api/constants';
 import styles from './style';
 
 // Funnel
@@ -60,7 +64,6 @@ const Login = () => {
         .signInWithCredential(credential)
         .then((result) => {
           const loggedUser = {
-            name: result.user.displayName,
             email: result.user.email,
             settings: defaultSettings,
           };
@@ -88,10 +91,7 @@ const Login = () => {
       const appleAuthRequestResponse = await appleAuth.performRequest(
         {
           requestedOperation: appleAuth.Operation.LOGIN,
-          requestedScopes: [
-            appleAuth.Scope.EMAIL,
-            appleAuth.Scope.FULL_NAME,
-          ],
+          requestedScopes: [appleAuth.Scope.EMAIL],
         },
       );
 
@@ -107,7 +107,6 @@ const Login = () => {
           .signInWithCredential(appleCredential)
           .then((result) => {
             const loggedUser = {
-              name: result.user.displayName,
               email: result.user.email,
               settings: defaultSettings,
             };
@@ -166,7 +165,7 @@ const Login = () => {
             <Image
               style={styles.appIconStyle}
               // eslint-disable-next-line global-require
-              source={require('../../assets/appicon.png')}
+              source={require('../../assets/icon_transparent.png')}
             />
             <Text style={styles.titleTextStyle}>
               Don&apos;t Waste Today!

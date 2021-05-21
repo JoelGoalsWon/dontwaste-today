@@ -37,6 +37,15 @@ const MoreReasons = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeAreaMoreReasons}>
       <View style={styles.viewMoreReasonsStyle}>
+        {showHiddenFeatures && (
+          <Button
+            text='On Reddit'
+            color={colors.reddit}
+            fontColor='white'
+            onPress={() => onAddAnswer('On Reddit')}
+            Ionicons={<Ionicons name='logo-reddit' color='#fff' />}
+          />
+        )}
         <FlatList
           style={styles.flatListMoreReasons}
           data={reasonsToDisplay}
@@ -50,15 +59,6 @@ const MoreReasons = ({ navigation }) => {
           )}
           keyExtractor={(item) => item}
         />
-        {showHiddenFeatures && (
-          <Button
-            text='On Reddit'
-            color={colors.reddit}
-            fontColor='white'
-            onPress={() => onAddAnswer('On Reddit')}
-            Ionicons={<Ionicons name='logo-reddit' color='#fff' />}
-          />
-        )}
       </View>
     </SafeAreaView>
   );

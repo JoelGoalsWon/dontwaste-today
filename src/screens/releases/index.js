@@ -28,7 +28,7 @@ const releases = () => {
         <Image
           style={styles.image}
           // eslint-disable-next-line global-require
-          source={require('../../assets/appicon.png')}
+          source={require('../../assets/icon_transparent.png')}
         />
         <Text style={styles.title}>Don&apos;t Waste Today</Text>
         <Text style={styles.title}>just got better!</Text>

@@ -21,6 +21,7 @@ store.subscribe(getSettings);
 const getAvailableDateTime = (availableDays, offsetDays = 0) => {
   let availableDay;
   let i = offsetDays;
+
   do {
     const day = moment().add(i, 'days').isoWeekday();
     availableDay = availableDays.find(
@@ -36,6 +37,7 @@ const getAvailableDateTime = (availableDays, offsetDays = 0) => {
 
 const getNextNotificationTime = async () => {
   const settings = await getSettings();
+  const dates = [];
 
   if (settings) {
     // Set time in available days range
@@ -86,12 +88,12 @@ const getNextNotificationTime = async () => {
     if (isTimeInRange) {
       // Get difference in milliseconds from calculated time and now
       const nextNotificationTime = calculatedDateTime.diff(moment());
-      console.log(
-        `You  will be asked again in: ${Math.floor(
-          nextNotificationTime / 60000,
-        )} minutes`,
-      );
-      return nextNotificationTime;
+      // console.log(
+      //   `You  will be asked again in: ${Math.floor(
+      //     nextNotificationTime / 60000,
+      //   )} minutes`,
+      // );
+      dates.push(nextNotificationTime);
     }
 
     // Set date in next available day
@@ -109,15 +111,17 @@ const getNextNotificationTime = async () => {
 
     // Get difference in milliseconds from calculated time and now
     const nextNotificationTime = nextAvailableDateTime.diff(moment());
-    console.log(
-      `You  will be asked next time at: ${Math.floor(
-        nextNotificationTime / 60000,
-      )} minutes`,
-    );
+    // console.log(
+    //   `You  will be asked next time in: ${Math.floor(
+    //     nextNotificationTime / 60000,
+    //   )} minutes`,
+    // );
 
-    return nextNotificationTime;
+    dates.push(nextNotificationTime);
+
+    return [...new Set(dates)];
   }
-  return new Date(Date.now() + 25 * 1000);
+  return [new Date(Date.now() + 25 * 1000)];
 };
 
 export const cancelAllLocalNotifications = () => {
@@ -128,34 +132,44 @@ export const cancelAllLocalNotifications = () => {
   }
 };
 
-// TODO  call when changing something  in the settings
+// TODO call when changing something in the settings
 // TODO set an id and delete only this notification (in case other scheduled nots are needed)
 export const scheduleQuestionLocalNotification = async () => {
   cancelAllLocalNotifications();
 
-  const date = await getNextNotificationTime();
+  const dates = await getNextNotificationTime();
 
-  if (Platform.OS === 'android') {
-    PushNotification.localNotificationSchedule({
-      channelId: 'procrastination-checker', // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      title: questionNotificationTitle,
-      message: '(be honest with yourself)', // (required)
-      ticker: 'Are you procrastinating right now?',
-      actions: ['Yes', 'No'], // (Android only) See the doc for notification actions to know more
-      date: new Date(Date.now() + date),
-      vibration: 300,
-      color: colors.primary,
-      invokeApp: false,
-      group: 'questions',
-    });
-  } else {
-    PushNotificationIOS.addNotificationRequest({
-      id: 'question',
-      title: questionNotificationTitle,
-      body: '(be honest with yourself)',
-      category: 'questions',
-      invokeApp: false,
-      fireDate: new Date(Date.now() + date),
-    });
-  }
+  dates.forEach((date) => {
+    if (Platform.OS === 'android') {
+      PushNotification.localNotificationSchedule({
+        channelId: 'procrastination-checker', // (required) channelId, if the channel doesn't exist, notification will not trigger.
+        title: questionNotificationTitle,
+        message: '(be honest with yourself)', // (required)
+        ticker: 'Are you procrastinating right now?',
+        // actions: ['Yes', 'No'], // (Android only) See the doc for notification actions to know more
+        date: new Date(Date.now() + date),
+        vibration: 300,
+        color: colors.primary,
+        invokeApp: false,
+        group: 'questions',
+      });
+    } else {
+      // Temp fix: using a deprecated funtion because the original suddenly stopped working (TODO)
+      PushNotificationIOS.scheduleLocalNotification({
+        alertTitle: questionNotificationTitle,
+        alertBody: '(be honest with yourself)',
+        category: 'questions',
+        fireDate: Date.now() + date,
+      });
+
+      // PushNotificationIOS.addNotificationRequest({
+      //   id: 'question',
+      //   title: questionNotificationTitle,
+      //   body: '(be honest with yourself)',
+      //   category: 'questions',
+      //   invokeApp: false,
+      //   fireDate: new Date(Date.now() + date),
+      // });
+    }
+  });
 };

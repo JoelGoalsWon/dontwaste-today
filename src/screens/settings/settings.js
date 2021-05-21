@@ -27,6 +27,7 @@ import { colors } from '../../api/constants';
 import { cancelAllLocalNotifications } from '../../api/notifications';
 import { unsubscribeAnswerActions } from '../../redux/actions/answer';
 import { unsubscribeSettingsActions } from '../../redux/actions/setting';
+import PopupAsFooter from '../../components/common/PopupAsFooter';
 
 const Settings = ({ settings, setSettings }) => {
   const [showAndroid, setShowAndroid] = useState(false);
@@ -131,24 +132,10 @@ const Settings = ({ settings, setSettings }) => {
           </TouchableOpacity>
         </View>
 
-        <View>
-          <Text
-            style={{
-              fontSize: 20,
-              backgroundColor: colors.success,
-              color: colors.light,
-              textAlign: 'center',
-              padding: 30,
-            }}
-            onPress={() =>
-              Linking.openURL(
-                'https://www.goalswon.com/?utm_source=settings&utm_medium=sideproject&utm_campaign=dwt',
-              )
-            }
-          >
-            Want an accountability coach? Get GoalsWon
-          </Text>
-        </View>
+        <PopupAsFooter
+          screen='Settings'
+          link='https://www.goalswon.com/?utm_source=settings&utm_medium=sideproject&utm_campaign=dwt'
+        />
       </ScrollView>
     </SafeAreaView>
   );
