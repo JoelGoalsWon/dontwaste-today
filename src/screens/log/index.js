@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, FlatList, Text, View } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
+import { RectButton } from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import moment from 'moment';
 import { colors } from '../../api/constants';
+import { deleteEntry } from '../../api/firestore';
 import Title from '../../components/common/Title';
 import { fetchAnswers } from '../../redux/actions/answer';
 import styles from './styles';
@@ -22,6 +25,10 @@ const Stats = () => {
   useEffect(() => {
     dispatch(fetchAnswers());
   }, []);
+
+  const onDeleteEntry = async (entry) => {
+    await deleteEntry(entry);
+  };
 
   return (
     <>
@@ -40,42 +47,59 @@ const Stats = () => {
                 alignItems: 'center',
               }}
             >
-              <View style={styles.logsContainer}>
-                {answers.map((item) => (
-                  <View
-                    key={item.createdAt}
-                    style={styles.itemContainer}
+              <FlatList
+                style={styles.logsContainer}
+                data={answers}
+                renderItem={({ item }) => (
+                  <Swipeable
+                    friction={2}
+                    rightThreshold={40}
+                    renderRightActions={() => (
+                      <RectButton
+                        style={styles.deleteAction}
+                        onPress={() => onDeleteEntry(item)}
+                      >
+                        <Ionicons
+                          name='trash-outline'
+                          color={colors.tertiary}
+                          size={24}
+                        />
+                      </RectButton>
+                    )}
                   >
-                    <View>
-                      {item.reason === 'Is not procrastinating' ? (
-                        <Ionicons
-                          name='checkmark-circle-outline'
-                          color={colors.success}
-                          size={20}
-                        />
-                      ) : (
-                        <Ionicons
-                          name='close-circle-outline'
-                          color={colors.danger}
-                          size={20}
-                        />
-                      )}
-                    </View>
-                    <View style={styles.textContainer}>
-                      <Text style={styles.reason}>
-                        {item.reason === 'Is not procrastinating'
-                          ? 'Not procrastinating'
-                          : item.reason}
-                      </Text>
-                      <Text>
-                        {moment(item.createdAt).format(
-                          'ddd D MMM, hh:mm A',
+                    <View style={styles.itemContainer}>
+                      <View>
+                        {item.reason === 'Is not procrastinating' ? (
+                          <Ionicons
+                            name='checkmark-circle-outline'
+                            color={colors.success}
+                            size={20}
+                          />
+                        ) : (
+                          <Ionicons
+                            name='close-circle-outline'
+                            color={colors.danger}
+                            size={20}
+                          />
                         )}
-                      </Text>
+                      </View>
+                      <View style={styles.textContainer}>
+                        <Text style={styles.reason}>
+                          {item.reason === 'Is not procrastinating'
+                            ? 'Not procrastinating'
+                            : item.reason}
+                        </Text>
+                        <Text>
+                          {moment(item.createdAt).format(
+                            'ddd D MMM, hh:mm A',
+                          )}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                ))}
-              </View>
+                  </Swipeable>
+                )}
+                keyExtractor={item => item.createdAt}
+              />
             </ScrollView>
             {showPopup && (
               <Popup

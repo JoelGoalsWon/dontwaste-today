@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     marginHorizontal: 15,
+    backgroundColor: colors.background,
   },
   chartContainer: {
     justifyContent: 'center',

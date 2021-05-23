@@ -11,6 +11,7 @@ export const colors = {
   dark: '#2d3436',
   light: '#ffffff',
   reddit: '#FF4500',
+  background: '#f2f2f2',
 };
 
 export const reasons = [

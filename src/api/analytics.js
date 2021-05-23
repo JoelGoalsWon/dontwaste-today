@@ -25,6 +25,18 @@ export const reasonTap = async (reason) => {
   }
 };
 
+// Modified to track deletions
+export const entryDelete = async (reason, date) => {
+  try {
+    await analytics().logEvent('entry_delete', {
+      reason,
+      date,
+    });
+  } catch (e) {
+    console.log('Unable to log analytics event:', e);
+  }
+};
+
 // Funnel events
 export const openSourceOrWhyNeededTap = async () => {
   try {

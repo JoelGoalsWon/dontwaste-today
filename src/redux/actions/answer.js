@@ -42,10 +42,10 @@ export const fetchAnswers = () => (dispatch) => {
       .orderBy('createdAt', 'desc')
       .onSnapshot(
         (snapshot) => {
-          const answers = snapshot.docs.map((doc) => {
-            const answer = doc.data();
-            return answer;
-          });
+          const answers = snapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id
+          }));
           dispatch(fetchAnswersSuccess(answers));
           dispatch(setLoading(false));
         },

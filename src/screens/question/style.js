@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../api/constants';
 
 const styles = StyleSheet.create({
   safeAreaQuestion: {
     flex: 1,
     marginHorizontal: 10,
+    backgroundColor: colors.background,
   },
   viewFourButtons: {
     flexDirection: 'row',

@@ -4,6 +4,7 @@ import { colors } from '../../api/constants';
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: colors.background,
   },
   scrollViewStyle: {
     marginTop: 20,
